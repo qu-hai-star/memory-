@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 网站元数据 -->
+    <meta name="description" content="三秒记忆消除器 - 快速忘记尴尬的事情，重新开始美好的一天">
+    <meta name="keywords" content="记忆消除, 忘记尴尬, 心情调节, 心理健康">
+    <meta name="author" content="记忆消除团队">
+    
+    <!-- 社交媒体分享标签 -->
+    <meta property="og:title" content="三秒记忆消除器">
+    <meta property="og:description" content="快速忘记尴尬的事情，重新开始美好的一天">
+    <meta property="og:image" content="https://picsum.photos/800/400?random=1">
+    <meta property="og:url" content="https://memory-eraser.vercel.app">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="三秒记忆消除器">
+    <meta name="twitter:description" content="快速忘记尴尬的事情，重新开始美好的一天">
+    <meta name="twitter:image" content="https://picsum.photos/800/400?random=1">
+    
+    <title>三秒记忆消除器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1', // 紫色主色调，代表神秘和记忆
+                        secondary: '#EC4899', // 粉色辅助色，增加活力
+                        accent: '#3B82F6', // 蓝色点缀，提供冷静感
+                        dark: '#1F2937', // 深色背景
+                        light: '#F3F4F6', // 浅色文本
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            .animate-fade-out {
+                animation: fadeOut 0.5s ease-in-out;
+            }
+            .animate-pulse-slow {
+                animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .bg-gradient-memory {
+                background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            }
+            /* 添加字体预加载和动画关键帧 */
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-20px); }
+            }
+        }
+    </style>
+    
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 预加载资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 加载图标 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+</head>
+<body class="bg-gradient-to-br from-dark to-gray-800 min-h-screen font-inter text-light">
+    <div class="container mx-auto px-4 py-12 max-w-4xl">
+        <!-- 标题区域 -->
+        <header class="text-center mb-12 animate-fade-in">
+            <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4 text-shadow-lg">
+                三秒记忆消除器
+            </h1>
+            <p class="text-[clamp(1rem,2vw,1.25rem)] text-gray-300 max-w-2xl mx-auto">
+                把尴尬的事情告诉我们，三秒钟后，它将永远消失在记忆的长河中...
+            </p>
+        </header>
+        
+        <!-- 主内容区域 -->
+        <main class="relative">
+            <!-- 记忆输入框 -->
+            <div id="memory-input-container" class="bg-gray-800/70 backdrop-blur-md rounded-2xl p-8 shadow-2xl mb-8 transform transition-all duration-500 hover:shadow-primary/20">
+                <div class="flex flex-col md:flex-row gap-4 items-center">
+                    <div class="flex-1">
+                        <label for="memory-input" class="block text-lg font-medium text-gray-200 mb-2">
+                            <i class="fa-solid fa-memory text-primary mr-2"></i>输入你想要忘记的事情
+                        </label>
+                        <textarea 
+                            id="memory-input" 
+                            rows="3" 
+                            class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary text-gray-100 transition-all duration-300 resize-none"
+                            placeholder="在这里输入让你尴尬的事情..."
+                        ></textarea>
+                    </div>
+                    <button 
+                        id="forget-button" 
+                        class="bg-gradient-memory hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-105 hover:shadow-primary/30 flex items-center"
+                    >
+                        <i class="fa-solid fa-trash-can mr-2"></i>
+                        忘记它
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 倒计时区域 (默认隐藏) -->
+            <div id="countdown-container" class="hidden absolute inset-0 bg-dark/90 backdrop-blur-lg rounded-2xl flex flex-col items-center justify-center z-10">
+                <div id="countdown" class="text-[clamp(8rem,20vw,15rem)] font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary animate-pulse-slow">
+                    3
+                </div>
+                <p id="countdown-text" class="text-xl text-gray-300 mt-4">
+                    记忆正在消失中...
+                </p>
+            </div>
+            
+            <!-- 结果区域 (默认隐藏) -->
+            <div id="result-container" class="hidden bg-gray-800/70 backdrop-blur-md rounded-2xl p-8 shadow-2xl mb-8 transform transition-all duration-500">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6 animate-pulse-slow">
+                        <i class="fa-solid fa-check text-3xl text-primary"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-100 mb-4">记忆已消除</h2>
+                    <p id="new-thought" class="text-lg text-gray-300 mb-6">
+                        你的大脑现在有了新的空间来存储更美好的回忆。
+                    </p>
+                    <button 
+                        id="reset-button" 
+                        class="bg-gradient-to-r from-accent to-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-accent/20 transition-all duration-300 hover:scale-105"
+                    >
+                        <i class="fa-solid fa-refresh mr-2"></i>
+                        再试一次
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- 底部区域 -->
+        <footer class="mt-16 text-center text-gray-400 text-sm">
+            <p>记住，有时候忘记是最好的治愈方式。愿你的每一天都充满欢笑和快乐。</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="hover:text-primary transition-colors duration-300">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+                <a href="#" class="hover:text-primary transition-colors duration-300">
+                    <i class="fa-solid fa-smile"></i>
+                </a>
+                <a href="#" class="hover:text-primary transition-colors duration-300">
+                    <i class="fa-solid fa-star"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 新想法列表
+        const newThoughts = [
+            "今天的天空真蓝，是个适合散步的好天气。",
+            "你知道吗？香蕉其实是浆果，而草莓不是。",
+            "尝试学习一项新技能，比如弹吉他或者画画。",
+            "给自己泡一杯热茶，享受片刻的宁静。",
+            "笑一笑，十年少，保持好心情最重要。",
+            "你是独一无二的，这个世界因为有你而更加美好。",
+            "明天又是新的一天，一切都会好起来的。",
+            "尝试一道新的美食，探索味蕾的新世界。",
+            "生活中的小确幸才是最真实的幸福。",
+            "给远方的朋友发个消息，分享你的近况。",
+            "读一本好书，就像和一个伟大的灵魂对话。",
+            "每天给自己一点时间，做一些让自己开心的事情。",
+            "记住，你已经做得很好了，不要太苛求自己。",
+            "阳光总在风雨后，美好的事情即将发生。",
+            "尝试冥想几分钟，感受内心的平静。",
+            "生活是一场奇妙的旅程，尽情享受每一刻。",
+            "今天你学到了什么新东西吗？",
+            "有时候，慢下来才能走得更远。",
+            "你值得拥有所有的美好。",
+            "保持好奇心，探索这个奇妙的世界。"
+        ];
+
+        // 获取DOM元素
+        const memoryInput = document.getElementById('memory-input');
+        const forgetButton = document.getElementById('forget-button');
+        const countdownContainer = document.getElementById('countdown-container');
+        const countdown = document.getElementById('countdown');
+        const countdownText = document.getElementById('countdown-text');
+        const resultContainer = document.getElementById('result-container');
+        const newThought = document.getElementById('new-thought');
+        const resetButton = document.getElementById('reset-button');
+        const memoryInputContainer = document.getElementById('memory-input-container');
+
+        // 忘记按钮点击事件
+        forgetButton.addEventListener('click', () => {
+            const inputText = memoryInput.value.trim();
+            
+            // 如果输入为空，提示用户
+            if (!inputText) {
+                memoryInput.classList.add('border-red-500');
+                memoryInput.classList.add('ring-1');
+                memoryInput.classList.add('ring-red-500');
+                setTimeout(() => {
+                    memoryInput.classList.remove('border-red-500');
+                    memoryInput.classList.remove('ring-1');
+                    memoryInput.classList.remove('ring-red-500');
+                }, 2000);
+                return;
+            }
+            
+            // 隐藏输入框，显示倒计时
+            memoryInputContainer.classList.add('opacity-0');
+            setTimeout(() => {
+                memoryInputContainer.classList.add('hidden');
+                countdownContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    countdownContainer.classList.add('opacity-100');
+                }, 10);
+            }, 500);
+            
+            // 开始倒计时
+            let count = 3;
+            countdown.textContent = count;
+            
+            const countdownInterval = setInterval(() => {
+                count--;
+                countdown.textContent = count;
+                
+                // 添加数字变化动画
+                countdown.classList.add('scale-125');
+                setTimeout(() => {
+                    countdown.classList.remove('scale-125');
+                }, 300);
+                
+                if (count <= 0) {
+                    clearInterval(countdownInterval);
+                    
+                    // 显示结果
+                    countdownText.textContent = "记忆已消除！";
+                    countdown.classList.add('text-green-500');
+                    
+                    setTimeout(() => {
+                        countdownContainer.classList.add('opacity-0');
+                        setTimeout(() => {
+                            countdownContainer.classList.add('hidden');
+                            resultContainer.classList.remove('hidden');
+                            setTimeout(() => {
+                                resultContainer.classList.add('opacity-100');
+                            }, 10);
+                            
+                            // 随机选择一个新想法
+                            const randomIndex = Math.floor(Math.random() * newThoughts.length);
+                            newThought.textContent = newThoughts[randomIndex];
+                            
+                            // 清空输入
+                            memoryInput.value = '';
+                        }, 500);
+                    }, 1000);
+                }
+            }, 1000);
+        });
+        
+        // 重置按钮点击事件
+        resetButton.addEventListener('click', () => {
+            resultContainer.classList.add('opacity-0');
+            setTimeout(() => {
+                resultContainer.classList.add('hidden');
+                memoryInputContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    memoryInputContainer.classList.remove('opacity-0');
+                }, 10);
+            }, 500);
+        });
+        
+        // 输入框获得焦点时的动画效果
+        memoryInput.addEventListener('focus', () => {
+            memoryInput.classList.add('ring-2');
+            memoryInput.classList.add('ring-primary/50');
+        });
+        
+        memoryInput.addEventListener('blur', () => {
+            memoryInput.classList.remove('ring-2');
+            memoryInput.classList.remove('ring-primary/50');
+        });
+        
+        // 添加触摸设备支持
+        document.addEventListener('touchstart', function() {}, false);
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 可以在这里添加页面加载后的初始化代码
+        });
+    </script>
+</body>
+</html>
